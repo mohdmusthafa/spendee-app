@@ -2,6 +2,7 @@
   "expo": {
     "name": "spendee-app",
     "slug": "spendee-app",
+    "scheme": "spendee-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -25,6 +26,18 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/DMSans-Regular.ttf",
+            "./assets/fonts/DMSans-Bold.ttf"
+          ]
+        }
+      ],
+      "expo-router"
+    ]
   }
 }
