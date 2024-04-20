@@ -6,6 +6,7 @@ import NextMealCard from '../components/NextMealCard';
 import UpcomingMeals from '../components/UpcomingMeals';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Link } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function App() {
@@ -30,6 +31,14 @@ export default function App() {
       </View>
       <NextMealCard />
       <UpcomingMeals />
+      <View style={{ padding: 20, borderBlockColor: '#fff', borderWidth: 2, borderRadius: 10 }}>
+        <Pressable onPress={async () => {
+          console.log('pressed')
+          await AsyncStorage.removeItem('meals');
+        }}>
+          <Text style={{ color: 'red'}}>Delete</Text>
+        </Pressable>
+      </View>
       <Link href="add-meal" asChild>
         <Pressable>
           <View style={styles.addButtonContainer}>

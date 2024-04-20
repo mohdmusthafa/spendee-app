@@ -1,23 +1,37 @@
+import { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, FlatList } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { isAfter } from 'date-fns';
 
 export default function UpcomingMeals() {
-  const meals = [
-    {
-      id: 1,
-      time: 'Breakfast - Tomorrow',
-      name: 'Pancakes and Syrup'
-    },
-    {
-      id: 2,
-      time: 'Lunch - Tomorrow',
-      name: 'Spaghetti and Meatballs'
-    },
-    {
-      id: 3,
-      time: 'Dinner - Tomorrow',
-      name: 'Mashed Potatoes and French Beans'
+  const [meals, setMeals] = useState([]);
+
+  useEffect(() => {
+    async function deleteAndFetchMeals() {
+      const mealsJSON = await AsyncStorage.getItem('meals');
+      const meals = JSON.parse(mealsJSON) || [];
+      const currentDate = new Date();
+      const updatedMeals = meals.filter(meal => isAfter(new Date(meal.date), currentDate));
+      setMeals(updatedMeals);
+      await AsyncStorage.setItem('meals', JSON.stringify(updatedMeals));
     }
-  ];
+    deleteAndFetchMeals();
+  }, []);
+
+  function formatDate(date) {
+    date = new Date(date);
+    const today = new Date();
+    const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
+
+    if (date.toDateString() === today.toDateString()) {
+      return 'Today';
+    } else if (date.toDateString() === tomorrow.toDateString()) {
+      return 'Tomorrow';
+    } else {
+      return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+    }
+  }
+
 
   return (
     <View style={styles.container}>
@@ -28,11 +42,11 @@ export default function UpcomingMeals() {
         <FlatList
           data={meals}
           style={{ marginTop: 20 }}
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={item => Math.random().toString()}
           renderItem={({ item }) => (
             <View style={styles.mealContainer}>
-              <Text style={styles.mealTimeText}>{item.time}</Text>
-              <Text style={styles.mealNameText}>{item.name}</Text>
+              <Text style={styles.mealTimeText}>{item.date && formatDate(item.date)} - {item.time}</Text>
+              <Text style={styles.mealNameText}>{item.meal}</Text>
             </View>
           )}
         />

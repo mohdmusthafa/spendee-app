@@ -16,7 +16,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.mohdmusthafa.spendeeapp"
     },
     "android": {
       "adaptiveIcon": {
@@ -38,6 +39,14 @@
         }
       ],
       "expo-router"
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "8e0b4b69-4ad5-4830-9a4d-11107da8e488"
+      }
+    }
   }
 }
